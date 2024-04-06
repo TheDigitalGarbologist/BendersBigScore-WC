@@ -95,7 +95,7 @@ if __name__ == "__main__":
     if st.button("Generate Word Cloud"):
         dialogues_df = main(base_url, character)  # Store the returned DataFrame
         if dialogues_df is not None:
-            st.subheader("Character Dialogues")
+            st.subheader("Lines of Dialogues")
             st.dataframe(dialogues_df)  # Display the DataFrame
 
 
