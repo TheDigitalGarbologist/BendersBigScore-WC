@@ -75,20 +75,20 @@ def generate_wordcloud(text, title, mask_path):
         download_image(wc.to_image(), f"{title}.png")
 
 
-def main(base_url, character):
+@st.cache_data
+def get_character_dialogues() -> list[pd.DataFrame]:
     pickle_url = "https://github.com/TheDigitalGarbologist/BendersBigScore-WC/raw/main/character_dialogues.pkl"
-    try:
-        response = requests.get(pickle_url)
-        response.raise_for_status()  # will raise an exception for 4xx/5xx errors
-        character_dialogues = pd.read_pickle(BytesIO(response.content))
-    except requests.HTTPError:
-        print("Error... Need to develop method for creating pickle_url")
+    response = requests.get(pickle_url, timeout=10)
+    response.raise_for_status()  # will raise an exception for 4xx/5xx errors
+    return pd.read_pickle(BytesIO(response.content))
 
-    if character in character_dialogues:
-        dialogues = character_dialogues[character]
-        dialogue_text = " ".join(dialogues)
-        mask_url = f"{character}.png"
-        generate_wordcloud(dialogue_text, f"WC_{character}", mask_url)
+
+def main(character):
+    character_dialogues = get_character_dialogues()
+    dialogues = character_dialogues[character]
+    dialogue_text = " ".join(dialogues)
+    mask_url = f"{character}.png"
+    generate_wordcloud(dialogue_text, f"WC_{character}", mask_url)
     return pd.DataFrame(dialogues, columns=["Dialogue"])
 
 
@@ -100,11 +100,10 @@ if __name__ == "__main__":
         """
     )
 
-    base_url = "https://theinfosphere.org/Episode_Transcript_Listing"
     character = st.selectbox("Select a character", CHARACTERS)
 
     if st.button("Generate Word Cloud"):
-        dialogues_df = main(base_url, character)  # Store the returned DataFrame
+        dialogues_df = main(character)  # Store the returned DataFrame
         if dialogues_df is not None:
             st.subheader("Lines of Dialogues")
             st.dataframe(dialogues_df)  # Display the DataFrame
