@@ -51,35 +51,34 @@ CHARACTERS = ["Fry", "Bender", "Leela", "Zoidberg", "Farnsworth", "Zapp"]
 
 @st.cache_data
 def generate_wordcloud(text: str, character: str) -> WordCloud:
-    with st.spinner("Generating word cloud..."):
-        mask = np.array(Image.open(f"{character}.png"))
-        mask[np.all(mask == [255, 255, 255, 255], axis=-1)] = [254, 254, 254, 255]
-        mask[mask.sum(axis=2) == 0] = 255
+    mask = np.array(Image.open(f"{character}.png"))
+    mask[np.all(mask == [255, 255, 255, 255], axis=-1)] = [254, 254, 254, 255]
+    mask[mask.sum(axis=2) == 0] = 255
 
-        wc = WordCloud(
-            background_color="black",
-            max_words=1000,
-            mask=mask,
-            max_font_size=60,
-            random_state=1,
-            relative_scaling=0.75,
-        ).generate(text)
-        image_colors = ImageColorGenerator(mask)
-        wc.recolor(color_func=image_colors)
+    wc = WordCloud(
+        background_color="black",
+        max_words=1000,
+        mask=mask,
+        max_font_size=60,
+        random_state=1,
+        relative_scaling=0.75,
+    ).generate(text)
+    image_colors = ImageColorGenerator(mask)
+    wc.recolor(color_func=image_colors)
 
     return wc
 
 
 @st.cache_data
 def get_character_dialogues() -> list[pd.DataFrame]:
-    with st.spinner("Fetching character dialogues..."):
-        pickle_url = "https://github.com/TheDigitalGarbologist/BendersBigScore-WC/raw/main/character_dialogues.pkl"
-        response = requests.get(pickle_url, timeout=10)
-        response.raise_for_status()  # will raise an exception for 4xx/5xx errors
-        return pd.read_pickle(BytesIO(response.content))
+    pickle_url = "https://github.com/TheDigitalGarbologist/BendersBigScore-WC/raw/main/character_dialogues.pkl"
+    response = requests.get(pickle_url, timeout=10)
+    response.raise_for_status()  # will raise an exception for 4xx/5xx errors
+    return pd.read_pickle(BytesIO(response.content))
 
 
-def main(character):
+def main():
+    character = st.selectbox("Select a character", CHARACTERS)
     character_dialogues = get_character_dialogues()
     dialogues = character_dialogues[character]
     dialogue_text = " ".join(dialogues)
@@ -91,7 +90,9 @@ def main(character):
     wc.to_image().save(buf, format="JPEG")
     image_bytes = buf.getvalue()
     st.download_button("Download Word Cloud", image_bytes, f"{title}.png")
-    return pd.DataFrame(dialogues, columns=["Dialogue"])
+    dialogues_df = pd.DataFrame(dialogues, columns=["Dialogue"])
+    st.subheader("Lines of Dialogues")
+    st.dataframe(dialogues_df)  # Display the DataFrame
 
 
 if __name__ == "__main__":
@@ -102,8 +103,4 @@ if __name__ == "__main__":
         """
     )
 
-    character = st.selectbox("Select a character", CHARACTERS)
-
-    dialogues_df = main(character)  # Store the returned DataFrame
-    st.subheader("Lines of Dialogues")
-    st.dataframe(dialogues_df)  # Display the DataFrame
+    main()
