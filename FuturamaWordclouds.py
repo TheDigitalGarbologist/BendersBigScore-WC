@@ -82,7 +82,7 @@ def main(base_url, character):
 
         
 if __name__ == "__main__":
-    st.title("Futurama Word Cloud Generator!")
+    st.title("WELCOMEEEE to the Word Cloud Generator of Futurama!")
     st.markdown(
         """
         This Streamlit App pulls in the transcript of Futurama via https://theinfosphere.org, creates a subset of dataframes for each character, and converts the lines spoken by that character into a custom word cloud.
