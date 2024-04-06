@@ -103,8 +103,6 @@ if __name__ == "__main__":
 
     character = st.selectbox("Select a character", CHARACTERS)
 
-    if st.button("Generate Word Cloud"):
-        dialogues_df = main(character)  # Store the returned DataFrame
-        if dialogues_df is not None:
-            st.subheader("Lines of Dialogues")
-            st.dataframe(dialogues_df)  # Display the DataFrame
+    dialogues_df = main(character)  # Store the returned DataFrame
+    st.subheader("Lines of Dialogues")
+    st.dataframe(dialogues_df)  # Display the DataFrame
