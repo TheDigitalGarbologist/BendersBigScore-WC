@@ -73,9 +73,8 @@ def main(base_url, character):
     if character in character_dialogues:
         dialogues = character_dialogues[character]
         dialogue_text = ' '.join(dialogues)
-        mask_url = f'https://github.com/TheDigitalGarbologist/BendersBigScore-WC/blob/main/{character}.png?raw=true'
+        mask_url = f'{character}.png'
         generate_wordcloud(dialogue_text, f'WC_{character}', mask_url)
-
 if __name__ == "__main__":
     st.title("Character Word Cloud Generator")
     
