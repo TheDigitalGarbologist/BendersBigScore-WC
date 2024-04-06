@@ -87,6 +87,7 @@ if __name__ == "__main__":
             - PNG Files: Google Image Search
             @Update: April 2024
         """
+    )
     
     base_url = 'https://theinfosphere.org/Episode_Transcript_Listing'
     character = st.selectbox("Select a character", CHARACTERS)
