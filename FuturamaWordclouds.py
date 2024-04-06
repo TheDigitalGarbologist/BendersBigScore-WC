@@ -75,12 +75,12 @@ def main(base_url, character):
                 character_dialogues[char].extend(character_dialogue)
 
         pd.to_pickle(character_dialogues, pickle_path)
-
+    
     if character in character_dialogues:
         dialogues = character_dialogues[character]
         dialogue_text = ' '.join(dialogues)
-        mask_path = f'Masks/{character}.png'
-        generate_wordcloud(dialogue_text, f'WC_{character}', mask_path)
+        mask_url = f'https://github.com/TheDigitalGarbologist/BendersBigScore-WC/blob/main/{character}.png?raw=true'
+        generate_wordcloud(dialogue_text, f'WC_{character}', mask_url)
 
 if __name__ == "__main__":
     st.title("Character Word Cloud Generator")
