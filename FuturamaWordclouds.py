@@ -1,11 +1,12 @@
-import re
+# import re
 from io import BytesIO
 
 import numpy as np
 import pandas as pd
 import requests
 import streamlit as st
-from bs4 import BeautifulSoup
+
+# from bs4 import BeautifulSoup
 from PIL import Image
 from wordcloud import ImageColorGenerator, WordCloud
 
