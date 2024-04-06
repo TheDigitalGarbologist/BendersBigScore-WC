@@ -78,6 +78,8 @@ def main(base_url, character):
         dialogue_text = ' '.join(dialogues)
         mask_url = f'{character}.png'
         generate_wordcloud(dialogue_text, f'WC_{character}', mask_url)
+        st.dataframe(dialogues)
+        
 if __name__ == "__main__":
     st.title("Futurama Word Cloud Generator!")
     st.markdown(
@@ -91,4 +93,6 @@ if __name__ == "__main__":
     
     if st.button("Generate Word Cloud"):
         main(base_url, character)
+
+
 
