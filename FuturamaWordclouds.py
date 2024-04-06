@@ -43,7 +43,7 @@ def transcript_to_dataframe(url, session):
             character, dialogue = cleaned_line.split(':', 1)
             dialogues.append({'character': character.strip(), 'dialogue': dialogue.strip()})
 
-    return pd.DataFrame(dialogues)
+    return pd.DataFrame(dialogues,columns=['Line No.', 'Dialogue'])
 
 def generate_wordcloud(text, title, mask_path):
     mask = np.array(Image.open(mask_path))
