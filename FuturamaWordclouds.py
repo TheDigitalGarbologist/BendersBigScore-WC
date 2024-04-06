@@ -80,8 +80,7 @@ def main(base_url):
 
     for character, dialogues in character_dialogues.items():
         dialogue_text = ' '.join(dialogues)
-        mask_folder = r'C:\BendersBigWordCloud\Masks'
-        mask_path = f'{mask_folder}\\{character}.png'
+        mask_path = f'{character}.png'
         output_path = r'C:\BendersBigWordCloud\final\v4'
         generate_wordcloud(dialogue_text, f'WC_{character}', mask_path)
         # break
