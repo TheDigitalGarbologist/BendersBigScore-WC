@@ -79,7 +79,14 @@ def main(base_url, character):
         mask_url = f'{character}.png'
         generate_wordcloud(dialogue_text, f'WC_{character}', mask_url)
 if __name__ == "__main__":
-    st.title("Character Word Cloud Generator")
+    st.title("Futurama Word Cloud Generator!")
+    st.markdown(
+        """
+        This python script greatly consolidates the work I did in 2020 when I was first learning Python.
+            - Data Source: https://theinfosphere.org/Infosphere:Transcript
+            - PNG Files: Google Image Search
+            @Update: April 2024
+        """
     
     base_url = 'https://theinfosphere.org/Episode_Transcript_Listing'
     character = st.selectbox("Select a character", CHARACTERS)
