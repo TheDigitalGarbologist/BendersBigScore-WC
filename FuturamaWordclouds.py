@@ -61,7 +61,7 @@ def generate_wordcloud(text, title, mask_path):
     plt.show()
 
 def main(base_url, character):
-    pickle_path = 'character_dialogues.pkl'
+    pickle_path = f'https://github.com/TheDigitalGarbologist/BendersBigScore-WC/blob/main/character_dialogues.pkl?raw=true'
     if os.path.exists(pickle_path):
         character_dialogues = pd.read_pickle(pickle_path)
     else:
