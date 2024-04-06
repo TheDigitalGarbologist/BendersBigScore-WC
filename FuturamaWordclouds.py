@@ -78,24 +78,31 @@ def get_character_dialogues() -> list[pd.DataFrame]:
 
 
 def main():
+    # Choose a character
     character = st.selectbox("Select a character", CHARACTERS)
+
+    # Generate wordcloud
     character_dialogues = get_character_dialogues()
     dialogues = character_dialogues[character]
     dialogue_text = " ".join(dialogues)
     wc = generate_wordcloud(dialogue_text, character)
     title = f"WC_{character}"
     st.image(wc.to_array(), caption=title, use_column_width=True)
+
     # Add a download button for the word cloud image
     buf = BytesIO()
     wc.to_image().save(buf, format="JPEG")
     image_bytes = buf.getvalue()
     st.download_button("Download Word Cloud", image_bytes, f"{title}.png")
+
+    # Show the dialogue dataframe
     dialogues_df = pd.DataFrame(dialogues, columns=["Dialogue"])
     st.subheader("Lines of Dialogues")
-    st.dataframe(dialogues_df)  # Display the DataFrame
+    st.dataframe(dialogues_df)
 
 
 if __name__ == "__main__":
+    st.set_page_config(page_title="Futurama Word Clouds", page_icon="🚀")
     st.title("WELCOMEEEE to the Word Cloud Generator of Futurama!")
     st.markdown(
         """
