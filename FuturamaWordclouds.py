@@ -86,8 +86,10 @@ def main(character):
     title = f"WC_{character}"
     st.image(wc.to_array(), caption=title, use_column_width=True)
     # Add a download button for the word cloud image
-    if st.button("Download Word Cloud"):
-        download_image(wc.to_image(), f"{title}.png")
+    buf = BytesIO()
+    wc.to_image().save(buf, format="JPEG")
+    image_bytes = buf.getvalue()
+    st.download_button("Download Word Cloud", image_bytes, f"{title}.png")
     return pd.DataFrame(dialogues, columns=["Dialogue"])
 
 
