@@ -1,7 +1,6 @@
 import re
 from io import BytesIO
 
-import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 import requests
@@ -49,46 +48,46 @@ def transcript_to_dataframe(url, session):
     return pd.DataFrame(dialogues, columns=["Line No.", "Dialogue"])
 
 
-def generate_wordcloud(text, title, mask_path):
-    mask = np.array(Image.open(mask_path))
-    mask[np.all(mask == [255, 255, 255, 255], axis=-1)] = [254, 254, 254, 255]
-    mask[mask.sum(axis=2) == 0] = 255
+@st.cache_data
+def generate_wordcloud(text: str, character: str) -> WordCloud:
+    with st.spinner("Generating word cloud..."):
+        mask = np.array(Image.open(f"{character}.png"))
+        mask[np.all(mask == [255, 255, 255, 255], axis=-1)] = [254, 254, 254, 255]
+        mask[mask.sum(axis=2) == 0] = 255
 
-    wc = WordCloud(
-        background_color="black",
-        max_words=1000,
-        mask=mask,
-        max_font_size=60,
-        random_state=1,
-        relative_scaling=0.75,
-    ).generate(text)
-    image_colors = ImageColorGenerator(mask)
-    wc.recolor(color_func=image_colors)
+        wc = WordCloud(
+            background_color="black",
+            max_words=1000,
+            mask=mask,
+            max_font_size=60,
+            random_state=1,
+            relative_scaling=0.75,
+        ).generate(text)
+        image_colors = ImageColorGenerator(mask)
+        wc.recolor(color_func=image_colors)
 
-    plt.figure(figsize=(10, 10))
-    plt.imshow(wc, interpolation="bilinear")
-    plt.axis("off")
-    # plt.title(title)
-    st.image(wc.to_array(), caption=title, use_column_width=True)
-    # Add a download button for the word cloud image
-    if st.button("Download Word Cloud"):
-        download_image(wc.to_image(), f"{title}.png")
+    return wc
 
 
 @st.cache_data
 def get_character_dialogues() -> list[pd.DataFrame]:
-    pickle_url = "https://github.com/TheDigitalGarbologist/BendersBigScore-WC/raw/main/character_dialogues.pkl"
-    response = requests.get(pickle_url, timeout=10)
-    response.raise_for_status()  # will raise an exception for 4xx/5xx errors
-    return pd.read_pickle(BytesIO(response.content))
+    with st.spinner("Fetching character dialogues..."):
+        pickle_url = "https://github.com/TheDigitalGarbologist/BendersBigScore-WC/raw/main/character_dialogues.pkl"
+        response = requests.get(pickle_url, timeout=10)
+        response.raise_for_status()  # will raise an exception for 4xx/5xx errors
+        return pd.read_pickle(BytesIO(response.content))
 
 
 def main(character):
     character_dialogues = get_character_dialogues()
     dialogues = character_dialogues[character]
     dialogue_text = " ".join(dialogues)
-    mask_url = f"{character}.png"
-    generate_wordcloud(dialogue_text, f"WC_{character}", mask_url)
+    wc = generate_wordcloud(dialogue_text, character)
+    title = f"WC_{character}"
+    st.image(wc.to_array(), caption=title, use_column_width=True)
+    # Add a download button for the word cloud image
+    if st.button("Download Word Cloud"):
+        download_image(wc.to_image(), f"{title}.png")
     return pd.DataFrame(dialogues, columns=["Dialogue"])
 
 
