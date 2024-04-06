@@ -60,6 +60,9 @@ def generate_wordcloud(text, title, mask_path):
     plt.axis("off")
     # plt.title(title)
     st.image(wc.to_array(), caption=title, use_column_width=True)
+    # Add a download button for the word cloud image
+    if st.button("Download Word Cloud"):
+        download_image(wc.to_image(), f'{title}.png')
 
 def main(base_url, character):
     pickle_url = f'https://github.com/TheDigitalGarbologist/BendersBigScore-WC/raw/main/character_dialogues.pkl'
