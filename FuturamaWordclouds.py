@@ -1,6 +1,4 @@
-import os
 import re
-from collections import defaultdict
 from io import BytesIO
 
 import matplotlib.pyplot as plt
