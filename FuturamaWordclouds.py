@@ -9,6 +9,7 @@ from collections import defaultdict
 from PIL import Image
 from wordcloud import WordCloud, ImageColorGenerator
 import matplotlib.pyplot as plt
+from io import BytesIO
 
 CHARACTERS = ['Fry', 'Bender', 'Leela', 'Zoidberg', 'Farnsworth', 'Zapp']
 
