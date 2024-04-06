@@ -61,21 +61,14 @@ def generate_wordcloud(text, title, mask_path):
     plt.show()
 
 def main(base_url, character):
-    pickle_path = f'https://github.com/TheDigitalGarbologist/BendersBigScore-WC/blob/main/character_dialogues.pkl?raw=true'
-    if os.path.exists(pickle_path):
-        character_dialogues = pd.read_pickle(pickle_path)
-    else:
-        transcript_urls, session = fetch_transcript_urls(base_url)
-        character_dialogues = defaultdict(list)
-
-        for url in transcript_urls:
-            df = transcript_to_dataframe(url, session)
-            for char in CHARACTERS:
-                character_dialogue = df[df['character'] == char]['dialogue'].tolist()
-                character_dialogues[char].extend(character_dialogue)
-
-        pd.to_pickle(character_dialogues, pickle_path)
-    
+    pickle_url = f'https://github.com/TheDigitalGarbologist/BendersBigScore-WC/raw/main/character_dialogues.pkl'
+    try:
+        response = requests.get(pickle_url)
+        response.raise_for_status()  # will raise an exception for 4xx/5xx errors
+        character_dialogues = pd.read_pickle(BytesIO(response.content))
+    except requests.HTTPError:
+        print('Error... Need to develop method for creating pickle_url')
+        
     if character in character_dialogues:
         dialogues = character_dialogues[character]
         dialogue_text = ' '.join(dialogues)
