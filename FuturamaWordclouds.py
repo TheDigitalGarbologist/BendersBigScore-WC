@@ -78,7 +78,9 @@ def main(base_url, character):
         dialogue_text = ' '.join(dialogues)
         mask_url = f'{character}.png'
         generate_wordcloud(dialogue_text, f'WC_{character}', mask_url)
-        st.dataframe(dialogues)
+        # Display the data with customized formatting
+        st.subheader("Character Dialogues")
+        st.dataframe(dialogues.style.highlight_max(axis=0))
         
 if __name__ == "__main__":
     st.title("Futurama Word Cloud Generator!")
