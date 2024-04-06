@@ -78,7 +78,7 @@ def main(base_url, character):
         dialogue_text = ' '.join(dialogues)
         mask_url = f'{character}.png'
         generate_wordcloud(dialogue_text, f'WC_{character}', mask_url)
-    return(dialogues)
+    return pd.DataFrame(dialogues)
 
         
 if __name__ == "__main__":
@@ -93,10 +93,10 @@ if __name__ == "__main__":
     character = st.selectbox("Select a character", CHARACTERS)
     
     if st.button("Generate Word Cloud"):
-        main(base_url, character)
-        # Display the data with customized formatting
-        st.subheader("Character Dialogues")
-        st.dataframe(dialogues)
+        dialogues_df = main(base_url, character)  # Store the returned DataFrame
+        if dialogues_df is not None:
+            st.subheader("Character Dialogues")
+            st.dataframe(dialogues_df)  # Display the DataFrame
 
 
 
