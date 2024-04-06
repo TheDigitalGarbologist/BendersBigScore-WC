@@ -80,13 +80,8 @@ def main(base_url, character):
         generate_wordcloud(dialogue_text, f'WC_{character}', mask_url)
 if __name__ == "__main__":
     st.title("Futurama Word Cloud Generator!")
-    st.markdown(
-        """
-        This python script greatly consolidates the work I did in 2020 when I was first learning Python.
-            - Data Source: https://theinfosphere.org/Infosphere:Transcript
-            - PNG Files: Google Image Search
-            @Update: April 2024
-        """
+    st.Text(
+        "This Streamlit App pulls in the transcript of Futurama via https://theinfosphere.org, creates a subset of dataframes for each character, and converts the lines spoken by that character into a custom word cloud."
     )
     
     base_url = 'https://theinfosphere.org/Episode_Transcript_Listing'
