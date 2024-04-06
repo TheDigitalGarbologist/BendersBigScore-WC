@@ -58,8 +58,8 @@ def generate_wordcloud(text, title, mask_path):
     plt.figure(figsize=(10, 10))
     plt.imshow(wc, interpolation='bilinear')
     plt.axis("off")
-    plt.title(title)
-    plt.show()
+    # plt.title(title)
+    st.image(wc.to_array(), caption=title, use_column_width=True)
 
 def main(base_url, character):
     pickle_url = f'https://github.com/TheDigitalGarbologist/BendersBigScore-WC/raw/main/character_dialogues.pkl'
