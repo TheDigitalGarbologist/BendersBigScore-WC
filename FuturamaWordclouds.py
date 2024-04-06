@@ -12,40 +12,40 @@ from wordcloud import ImageColorGenerator, WordCloud
 CHARACTERS = ["Fry", "Bender", "Leela", "Zoidberg", "Farnsworth", "Zapp"]
 
 
-@st.cache(allow_output_mutation=True)
-def fetch_transcript_urls(base_url):
-    session = requests.Session()
-    response = session.get(base_url)
-    soup = BeautifulSoup(response.text, "html.parser")
-    transcript_links = []
+# @st.cache(allow_output_mutation=True)
+# def fetch_transcript_urls(base_url):
+#     session = requests.Session()
+#     response = session.get(base_url)
+#     soup = BeautifulSoup(response.text, "html.parser")
+#     transcript_links = []
 
-    for a in soup.find_all("a", href=True):
-        href = a["href"]
-        if "Transcript:" in href:
-            full_url = "https://theinfosphere.org" + href
-            transcript_links.append(full_url)
+#     for a in soup.find_all("a", href=True):
+#         href = a["href"]
+#         if "Transcript:" in href:
+#             full_url = "https://theinfosphere.org" + href
+#             transcript_links.append(full_url)
 
-    return transcript_links, session
+#     return transcript_links, session
 
 
-@st.cache
-def transcript_to_dataframe(url, session):
-    response = session.get(url)
-    soup = BeautifulSoup(response.text, "html.parser")
-    content = soup.get_text()
-    lines = content.split("\n")
+# @st.cache
+# def transcript_to_dataframe(url, session):
+#     response = session.get(url)
+#     soup = BeautifulSoup(response.text, "html.parser")
+#     content = soup.get_text()
+#     lines = content.split("\n")
 
-    dialogues = []
-    for line in lines:
-        line = line.replace("⨂", "")
-        cleaned_line = re.sub(r"\[.*?\]|\(\d{2}:\d{2}\)", "", line).strip()
-        if ":" in cleaned_line:
-            character, dialogue = cleaned_line.split(":", 1)
-            dialogues.append(
-                {"character": character.strip(), "dialogue": dialogue.strip()}
-            )
+#     dialogues = []
+#     for line in lines:
+#         line = line.replace("⨂", "")
+#         cleaned_line = re.sub(r"\[.*?\]|\(\d{2}:\d{2}\)", "", line).strip()
+#         if ":" in cleaned_line:
+#             character, dialogue = cleaned_line.split(":", 1)
+#             dialogues.append(
+#                 {"character": character.strip(), "dialogue": dialogue.strip()}
+#             )
 
-    return pd.DataFrame(dialogues, columns=["Line No.", "Dialogue"])
+#     return pd.DataFrame(dialogues, columns=["Line No.", "Dialogue"])
 
 
 @st.cache_data
