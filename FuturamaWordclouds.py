@@ -78,7 +78,7 @@ def main(base_url, character):
         dialogue_text = ' '.join(dialogues)
         mask_url = f'{character}.png'
         generate_wordcloud(dialogue_text, f'WC_{character}', mask_url)
-    return pd.DataFrame(dialogues)
+    return pd.DataFrame(dialogues, columns=['Line No.', 'Dialogue'])
 
         
 if __name__ == "__main__":
