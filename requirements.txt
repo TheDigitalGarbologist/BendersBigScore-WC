@@ -1,9 +1,7 @@
-streamlit
-pandas
-requests
-numpy
-beautifulsoup4
-Pillow
-wordcloud
-matplotlib
-
+beautifulsoup4==4.12.3
+numpy==1.26.4
+pandas==2.2.1
+pillow==10.3.0
+requests==2.31.0
+streamlit==1.33.0
+wordcloud==1.9.3
